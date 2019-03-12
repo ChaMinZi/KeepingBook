@@ -5,12 +5,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+    <EditText
+        android:id="@+id/editText_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="전화번호"
+        android:inputType="numberSigned"
+        android:digits="0123456789-"
+        android:cursorVisible="true" />
+
+    <Button
+        android:id="@+id/KongShiru"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="두번째 페이지"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_below="@id/editText_number"
+        android:text="콩시루"/>
 
+    <Button
+        android:id="@+id/KongInjeolmi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_number"
+        android:layout_toRightOf="@id/KongShiru"
+        android:text="콩인절미" />
+
+    <Button
+        android:id="@+id/GgipiInjeolmi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_number"
+        android:layout_toRightOf="@id/KongInjeolmi"
+        android:text="기피인절미"/>
+
+    <Button
+        android:id="@+id/button_full_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="147dp"
+        android:text="완불" />
+
+    <Button
+        android:id="@+id/button_out_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_full_pay"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="93dp"
+        android:layout_marginLeft="93dp"
+        android:layout_marginTop="2dp"
+        android:text="미불" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_out_pay"
+        android:layout_marginLeft="0dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toRightOf="@id/button_out_pay"
+        android:cursorVisible="true"
+        android:hint="미불 가격" />
+
+    <EditText
+        android:id="@+id/button_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_full_pay"
+        android:cursorVisible="true"
+        android:hint="비고"/>
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="추가" />
 </RelativeLayout>

@@ -7,9 +7,11 @@ import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
     private Context context;
+    private static final int dbVersion = 1;
+    private static final String dbName = "RiceCake";
 
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
+        super(context, dbName, factory, dbVersion);
         this.context = context;
     }
 
@@ -20,18 +22,18 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         StringBuffer Osb = new StringBuffer();
-        Osb.append(" CREATE TABLE ORDER_TABLE ( ");
-        Osb.append(" NO INTEGER PRIMARY KEY, ");
+        Osb.append(" CREATE TABLE IF NOT EXISTS ORDER_TABLE ( ");
+        Osb.append(" PHONE TEXT PRIMARY KEY, ");
         Osb.append(" CONTENT TEXT, ");
         Osb.append(" COUNT INTEGER ) ");
 
         StringBuffer Psb = new StringBuffer();
-        Psb.append(" CREATE TABLE PRICE_TABLE ( ");
+        Psb.append(" CREATE TABLE IF NOT EXISTS PRICE_TABLE ( ");
         Psb.append(" NAME TEXT PRIMARY KEY, ");
         Psb.append(" PRICE INTEGER ) ");
 
         StringBuffer Msb = new StringBuffer();
-        Msb.append(" CREATE TABLE MEMO_TABLE ( ");
+        Msb.append(" CREATE TABLE IF NOT EXISTS MEMO_TABLE ( ");
         Msb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
         Msb.append(" PHONE TEXT, ");
         Msb.append(" MEMO TEXT ) ");
@@ -53,5 +55,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void testDB() {
         SQLiteDatabase db = getReadableDatabase();
+    }
+
+    public void addOrder(Item_Order order) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(" INSERT INTO ORDER_TABLE ( ");
+        sb.append(" PHONE, CONTENT, COUNT ) ");
+        sb.append(" VALUES ( ?, ?, ? ) ");
+
+        db.execSQL(sb.toString(),
+                new Object[]{
+                        order.getPhone(),
+                        order.getContext(),
+                        order.getCount()
+                });
+        Toast.makeText(context, "order 추가 완료", Toast.LENGTH_SHORT).show();
     }
 }
