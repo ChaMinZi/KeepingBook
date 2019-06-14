@@ -1,6 +1,7 @@
 package com.example.chacha.keepingbook;
 
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -29,12 +30,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         StringBuffer Psb = new StringBuffer();
         Psb.append(" CREATE TABLE IF NOT EXISTS PRICE_TABLE ( ");
-        Psb.append(" NAME TEXT PRIMARY KEY, ");
+        Psb.append(" NAME BLOB PRIMARY KEY, ");
         Psb.append(" PRICE INTEGER ) ");
 
         StringBuffer Msb = new StringBuffer();
         Msb.append(" CREATE TABLE IF NOT EXISTS MEMO_TABLE ( ");
         Msb.append(" _ID INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        Msb.append(" DAY TEXT, ");
+        Msb.append(" TIME TEXT, ");
         Msb.append(" PHONE TEXT, ");
         Msb.append(" MEMO TEXT ) ");
 
@@ -71,6 +74,26 @@ public class DBHelper extends SQLiteOpenHelper {
                         order.getContext(),
                         order.getCount()
                 });
-        Toast.makeText(context, "order 추가 완료", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "주문 추가 완료", Toast.LENGTH_SHORT).show();
+    }
+
+    public void addPrice(Item_Price product) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(" INSERT INTO PRICE_TABLE ( ");
+        sb.append(" NAME, PRICE ) ");
+        sb.append(" VALUES ( ?, ? ) ");
+
+        db.execSQL(sb.toString(), new Object[]{product.getName(), product.getPrice()});
+        Toast.makeText(context,"상품 추가 완료", Toast.LENGTH_SHORT).show();
+    }
+
+    public long getCountProduct(){
+        String countQuery = "SELECT * FROM PRICE_TABLE";
+        SQLiteDatabase db = getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db,"PRICE_TABLE");
+        db.close();
+        return count;
     }
 }

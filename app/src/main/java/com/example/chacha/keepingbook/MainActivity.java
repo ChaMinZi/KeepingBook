@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //DB생성
         if (dbHelper == null) {
             dbHelper = new DBHelper(MainActivity.this,null);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("첫번째"));
         tabLayout.addTab(tabLayout.newTab().setText("두번째"));
         tabLayout.addTab(tabLayout.newTab().setText("세번째"));
+        tabLayout.addTab(tabLayout.newTab().setText("상품 추가"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
