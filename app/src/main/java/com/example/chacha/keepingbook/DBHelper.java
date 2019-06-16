@@ -1,9 +1,11 @@
 package com.example.chacha.keepingbook;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -11,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int dbVersion = 1;
     private static final String dbName = "RiceCake";
 
-    public DBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
+     public DBHelper(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, dbName, factory, dbVersion);
         this.context = context;
     }
@@ -30,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         StringBuffer Psb = new StringBuffer();
         Psb.append(" CREATE TABLE IF NOT EXISTS PRICE_TABLE ( ");
-        Psb.append(" NAME BLOB PRIMARY KEY, ");
+        Psb.append(" NAME TEXT PRIMARY KEY, ");
         Psb.append(" PRICE INTEGER ) ");
 
         StringBuffer Msb = new StringBuffer();
@@ -89,11 +91,25 @@ public class DBHelper extends SQLiteOpenHelper {
         Toast.makeText(context,"상품 추가 완료", Toast.LENGTH_SHORT).show();
     }
 
-    public long getCountProduct(){
-        String countQuery = "SELECT * FROM PRICE_TABLE";
+    public int getCountProduct(){
         SQLiteDatabase db = getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db,"PRICE_TABLE");
         db.close();
-        return count;
+        return (int)count;
+    }
+
+    public String[] getProducts() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = (Cursor) db.rawQuery("SELECT NAME FROM PRICE_TABLE", null);
+        int count = cursor.getCount();
+        String[] product = new String[count];
+
+        cursor.moveToFirst();
+        for (int i=0; i<count;i++) {
+            product[i] = cursor.getString(cursor.getColumnIndex("NAME"));
+            Log.e("eeeeeeee",cursor.getString(cursor.getColumnIndex("NAME")));
+            cursor.moveToNext();
+        }
+        return product;
     }
 }

@@ -2,9 +2,9 @@ package com.example.chacha.keepingbook;
 
 public class Item_Price {
     private int price;
-    private byte[] name;
+    private String name;
 
-    public byte[] getName() {
+    public String getName() {
         return name;
     }
 
@@ -12,7 +12,7 @@ public class Item_Price {
         return price;
     }
 
-    public void setName(byte[] encode) {
+    public void setName(String name) {
         this.name = name;
     }
 

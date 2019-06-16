@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,57 +13,57 @@
         android:inputType="numberSigned"
         android:digits="0123456789-"
         android:cursorVisible="true" />
-
-    <GridView
-        android:id="@+id/grid"
-        android:numColumns="auto_fit"
-        android:layout_below="@id/editText_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </GridView>
-
-    <Button
-        android:id="@+id/button_full_pay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="147dp"
-        android:text="완불" />
-
-    <Button
-        android:id="@+id/button_out_pay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button_full_pay"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="93dp"
-        android:layout_marginLeft="93dp"
-        android:layout_marginTop="2dp"
-        android:text="미불" />
-
-    <EditText
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button_out_pay"
-        android:layout_marginLeft="0dp"
-        android:layout_marginBottom="1dp"
-        android:layout_toRightOf="@id/button_out_pay"
-        android:cursorVisible="true"
-        android:hint="미불 가격" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_full_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="완불" />
+
+        <Button
+            android:id="@+id/button_out_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="미불" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:hint="미불 가격" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/button_memo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_full_pay"
         android:cursorVisible="true"
         android:hint="비고"/>
 
-    <Button
-        android:id="@+id/button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="추가" />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <GridView
+            android:id="@+id/grid"
+            android:numColumns="auto_fit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_add"
+            android:layout_alignParentTop="true"/>
+
+        <Button
+            android:id="@+id/button_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="추가" />
+    </RelativeLayout>
+
+</LinearLayout>

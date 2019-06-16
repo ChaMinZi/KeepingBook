@@ -16,6 +16,8 @@ public class TabFragment2 extends Fragment {
     private DBHelper dbHelper;
     private Context context;
     GridView gridView;
+    private String[] productName;
+    ButtonAdapter buttonAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,12 +26,18 @@ public class TabFragment2 extends Fragment {
         editPhone = (EditText) view.findViewById(R.id.editText_number);
         gridView = (GridView) view.findViewById(R.id.grid);
 
+        if (dbHelper == null) {
+            dbHelper = new DBHelper(getActivity(), null);
+        }
+        productName = dbHelper.getProducts();
+        int count = dbHelper.getCountProduct();
+        buttonAdapter = new ButtonAdapter(getActivity());
+        buttonAdapter.setName(productName);
+        gridView.setAdapter(buttonAdapter);
+
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dbHelper == null) {
-                    dbHelper = new DBHelper(getActivity(), null);
-                }
                 Item_Order order = new Item_Order();
                 if (editPhone.getText().toString().equals("")) {
                     Toast.makeText(context, "전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
