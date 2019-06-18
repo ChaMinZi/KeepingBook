@@ -13,34 +13,53 @@
         android:inputType="numberSigned"
         android:digits="0123456789-"
         android:cursorVisible="true" />
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_full_pay"
+        <EditText
+            android:id="@+id/pick_date"
+            android:hint="날짜"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="완불" />
-
-        <Button
-            android:id="@+id/button_out_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="미불" />
+            android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/pick_time"
+            android:hint="시간"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_fullpay"
+            android:text="완불"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_outpay"
+            android:text="미불"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editText_outpay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:digits="0123456789-"
             android:cursorVisible="true"
             android:hint="미불 가격" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/button_memo"
+        android:id="@+id/editText_memo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cursorVisible="true"

@@ -10,6 +10,7 @@ public class ButtonAdapter extends BaseAdapter {
     private DBHelper dbHelper;
     private Context context;
     private String[] name;
+    private View.OnClickListener onClickListener;
 
     public ButtonAdapter(Context mContext) {
         context = mContext;
@@ -37,9 +38,13 @@ public class ButtonAdapter extends BaseAdapter {
         this.name = name;
     }
 
+    public void setmyOnclick(View.OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Button button;
+        final Button button;
 
         if (view == null) {
             button = new Button(context);
@@ -51,8 +56,9 @@ public class ButtonAdapter extends BaseAdapter {
         }
 
         button.setText(name[i]);
-        //button.setTextColor(Color.RED);
         button.setId(i);
+        button.setOnClickListener(onClickListener);
+
         return button;
     }
 }

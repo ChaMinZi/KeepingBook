@@ -24,16 +24,17 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuffer Osb = new StringBuffer();
-        Osb.append(" CREATE TABLE IF NOT EXISTS ORDER_TABLE ( ");
-        Osb.append(" PHONE TEXT PRIMARY KEY, ");
-        Osb.append(" CONTENT TEXT, ");
-        Osb.append(" COUNT INTEGER ) ");
-
         StringBuffer Psb = new StringBuffer();
         Psb.append(" CREATE TABLE IF NOT EXISTS PRICE_TABLE ( ");
         Psb.append(" NAME TEXT PRIMARY KEY, ");
         Psb.append(" PRICE INTEGER ) ");
+
+        StringBuffer Osb = new StringBuffer();
+        Osb.append(" CREATE TABLE IF NOT EXISTS ORDER_TABLE ( ");
+        Osb.append(" PHONE TEXT, ");
+        Osb.append(" CONTENT TEXT, ");
+        Osb.append(" COUNT INTEGER, ");
+        Osb.append(" FOREIGN KEY(CONTENT) REFERENCES PRICE_TABLE(NAME) ) ");
 
         StringBuffer Msb = new StringBuffer();
         Msb.append(" CREATE TABLE IF NOT EXISTS MEMO_TABLE ( ");
@@ -41,10 +42,12 @@ public class DBHelper extends SQLiteOpenHelper {
         Msb.append(" DAY TEXT, ");
         Msb.append(" TIME TEXT, ");
         Msb.append(" PHONE TEXT, ");
-        Msb.append(" MEMO TEXT ) ");
+        Msb.append(" MEMO TEXT, ");
+        Msb.append(" CHECK INTEGER, ");
+        Msb.append(" PAY INTEGER ) ");
 
-        db.execSQL(Osb.toString());
         db.execSQL(Psb.toString());
+        db.execSQL(Osb.toString());
         db.execSQL(Msb.toString());
 
         Toast.makeText(context, "Table 생성완료", Toast.LENGTH_SHORT).show();
@@ -91,6 +94,18 @@ public class DBHelper extends SQLiteOpenHelper {
         Toast.makeText(context,"상품 추가 완료", Toast.LENGTH_SHORT).show();
     }
 
+    public void addMemo(Item_Memo memo) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(" INSERT INTO MEMO_TABLE ( ");
+        sb.append(" DAY, TIME, PHONE, MEMO, CHECK, PAY ) ");
+        sb.append(" VALUES ( ?, ?, ?, ?, ? ) ");
+
+        db.execSQL(sb.toString(), new Object[]{memo.get_day(), memo.get_time(), memo.getPhone(), memo.getMemo()});
+        Toast.makeText(context, "주문 부가사항 추가 완료", Toast.LENGTH_SHORT).show();
+    }
+
     public int getCountProduct(){
         SQLiteDatabase db = getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db,"PRICE_TABLE");
@@ -111,5 +126,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return product;
+    }
+
+    public int getPrice() {
+
+        return 0;
     }
 }

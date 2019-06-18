@@ -42,12 +42,6 @@ public class TabFragment4 extends Fragment {
                 product.setName(String.format(editName.getText().toString(), "UTF-8"));
                 product.setPrice(Integer.parseInt(editPrice.getText().toString()));
                 dbHelper.addPrice(product);
- /*               for (int i=0; i<100;i++) {
-                    product = new Item_Price();
-                    product.setName(""+i);
-                    product.setPrice(2000);
-                    dbHelper.addPrice(product);
-                }*/
             }
         });
 

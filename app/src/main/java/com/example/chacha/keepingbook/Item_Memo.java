@@ -6,6 +6,7 @@ public class Item_Memo {
     private String _day;
     private String phone;
     private String memo;
+    private int pay, check;
 
     public int get_id() {
         return _id;
@@ -23,15 +24,23 @@ public class Item_Memo {
         return memo;
     }
 
+    public int getPay() {
+        return pay;
+    }
+
+    public int getCheck() {
+        return check;
+    }
+
     public void set_id(int _id) {
         this._id = _id;
     }
 
-    public void set_time(String phone) {
+    public void set_time(String _time) {
         this._time = _time;
     }
 
-    public void set_day(String memo) {
+    public void set_day(String _day) {
         this._day = _day;
     }
 
@@ -41,5 +50,13 @@ public class Item_Memo {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public void setPay(int pay) {
+        this.pay = pay;
+    }
+
+    public void setCheck(int check) {
+        this.check = check;
     }
 }

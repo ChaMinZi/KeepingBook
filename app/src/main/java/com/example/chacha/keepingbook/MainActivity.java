@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("첫번째"));
-        tabLayout.addTab(tabLayout.newTab().setText("두번째"));
-        tabLayout.addTab(tabLayout.newTab().setText("세번째"));
+        tabLayout.addTab(tabLayout.newTab().setText("주문 목록"));
+        tabLayout.addTab(tabLayout.newTab().setText("주문 추가"));
+        tabLayout.addTab(tabLayout.newTab().setText("주문량"));
         tabLayout.addTab(tabLayout.newTab().setText("상품 추가"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
