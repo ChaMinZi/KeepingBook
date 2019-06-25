@@ -143,10 +143,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String[] getPhone() {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = (Cursor)db.rawQuery("SELECT PHONE FROM ORDER_TABLE", null);
+        Cursor cursor = (Cursor)db.rawQuery("SELECT PHONE FROM ORDER_TABLE group by PHONE", null);
         int count = cursor.getCount();
         String[] phones = new String[count];
-
         cursor.moveToFirst();
         for (int i=0;i<count;i++) {
             phones[i] = cursor.getString(cursor.getColumnIndex("PHONE"));
