@@ -4,6 +4,11 @@ public class Item_List {
     private String product;
     private int count;
 
+    public Item_List(String product, int count){
+        this.product = product;
+        this.count = count;
+    }
+
     public String getProduct() {
         return product;
     }

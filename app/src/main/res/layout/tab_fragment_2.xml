@@ -55,7 +55,7 @@
             android:inputType="numberSigned"
             android:digits="0123456789-"
             android:cursorVisible="true"
-            android:hint="미불 가격" />
+            android:hint="지불한 가격" />
     </LinearLayout>
 
     <EditText

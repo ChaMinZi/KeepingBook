@@ -14,9 +14,8 @@ public class ButtonAdapter extends BaseAdapter {
 
     public ButtonAdapter(Context mContext) {
         context = mContext;
-        if (dbHelper == null) {
+        if (dbHelper == null)
             dbHelper = new DBHelper(context, null);//mainActicity를 넘겨줘야 함
-        }
     }
 
     @Override

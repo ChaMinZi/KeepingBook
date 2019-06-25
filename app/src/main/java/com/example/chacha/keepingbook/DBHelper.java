@@ -32,9 +32,9 @@ public class DBHelper extends SQLiteOpenHelper {
         StringBuffer Osb = new StringBuffer();
         Osb.append(" CREATE TABLE IF NOT EXISTS ORDER_TABLE ( ");
         Osb.append(" PHONE TEXT, ");
-        Osb.append(" CONTENT TEXT, ");
+        Osb.append(" PRODUCT TEXT, ");
         Osb.append(" COUNT INTEGER, ");
-        Osb.append(" FOREIGN KEY(CONTENT) REFERENCES PRICE_TABLE(NAME) ) ");
+        Osb.append(" FOREIGN KEY(PHONE) REFERENCES MEMO_TABLE(PHONE) ) ");
 
         StringBuffer Msb = new StringBuffer();
         Msb.append(" CREATE TABLE IF NOT EXISTS MEMO_TABLE ( ");
@@ -43,8 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Msb.append(" TIME TEXT, ");
         Msb.append(" PHONE TEXT, ");
         Msb.append(" MEMO TEXT, ");
-        Msb.append(" CHECK INTEGER, ");
-        Msb.append(" PAY INTEGER ) ");
+        Msb.append(" _CHECK INTEGER, ");
+        Msb.append(" _PAY INTEGER ) ");
 
         db.execSQL(Psb.toString());
         db.execSQL(Osb.toString());
@@ -70,13 +70,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         StringBuffer sb = new StringBuffer();
         sb.append(" INSERT INTO ORDER_TABLE ( ");
-        sb.append(" PHONE, CONTENT, COUNT ) ");
+        sb.append(" PHONE, PRODUCT, COUNT ) ");
         sb.append(" VALUES ( ?, ?, ? ) ");
 
         db.execSQL(sb.toString(),
                 new Object[]{
                         order.getPhone(),
-                        order.getContext(),
+                        order.getProduct(),
                         order.getCount()
                 });
         Toast.makeText(context, "주문 추가 완료", Toast.LENGTH_SHORT).show();
@@ -99,10 +99,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         StringBuffer sb = new StringBuffer();
         sb.append(" INSERT INTO MEMO_TABLE ( ");
-        sb.append(" DAY, TIME, PHONE, MEMO, CHECK, PAY ) ");
-        sb.append(" VALUES ( ?, ?, ?, ?, ? ) ");
+        sb.append(" DAY, TIME, PHONE, MEMO, _CHECK, _PAY ) ");
+        sb.append(" VALUES ( ?, ?, ?, ?, ?, ? ) ");
 
-        db.execSQL(sb.toString(), new Object[]{memo.get_day(), memo.get_time(), memo.getPhone(), memo.getMemo()});
+        db.execSQL(sb.toString(), new Object[]{memo.get_day(), memo.get_time(), memo.getPhone(), memo.getMemo(), memo.getCheck(), memo.getPay()});
         Toast.makeText(context, "주문 부가사항 추가 완료", Toast.LENGTH_SHORT).show();
     }
 
@@ -122,14 +122,68 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         for (int i=0; i<count;i++) {
             product[i] = cursor.getString(cursor.getColumnIndex("NAME"));
-            Log.e("eeeeeeee",cursor.getString(cursor.getColumnIndex("NAME")));
             cursor.moveToNext();
         }
         return product;
     }
 
-    public int getPrice() {
+    public int getProductQuantity(String product) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = (Cursor)db.rawQuery("SELECT SUM(COUNT) FROM ORDER_TABLE WHERE PRODUCT = '" + product + "'", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
 
-        return 0;
+    public int getPrice(String product) {
+        SQLiteDatabase db= getReadableDatabase();
+        Cursor cursor = (Cursor)db.rawQuery("SELECT PRICE FROM PRICE_TABLE WHERE NAME = '" + product + "'", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+    }
+
+    public String[] getPhone() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = (Cursor)db.rawQuery("SELECT PHONE FROM ORDER_TABLE", null);
+        int count = cursor.getCount();
+        String[] phones = new String[count];
+
+        cursor.moveToFirst();
+        for (int i=0;i<count;i++) {
+            phones[i] = cursor.getString(cursor.getColumnIndex("PHONE"));
+            cursor.moveToNext();
+        }
+        return phones;
+    }
+
+    public Item_OrderList getOrder(String phone) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = (Cursor)db.rawQuery("SELECT * FROM ORDER_TABLE WHERE PHONE = '"+phone+"'", null);
+        int count = cursor.getCount();
+        Item_OrderList item = new Item_OrderList();
+        String[] products = new String[count];
+        int[] productCount = new int[count];
+
+        item.setPhone(phone);
+        cursor.moveToFirst();
+        for (int i=0; i<count; i++) {
+            products[i] = cursor.getString(cursor.getColumnIndex("PRODUCT"));
+            productCount[i] = cursor.getInt(cursor.getColumnIndex("COUNT"));
+            Log.e("gggggggggggg :", products[i]);
+            Log.e("gggggggggggg", ""+productCount[i]);
+            cursor.moveToNext();
+        }
+        item.setProducts(products);
+        item.setProductCount(productCount);
+
+        Cursor mcursor = (Cursor)db.rawQuery("SELECT * FROM MEMO_TABLE WHERE PHONE = '"+phone+"'", null);
+        mcursor.moveToFirst();
+        item.set_id(mcursor.getInt(mcursor.getColumnIndex("_ID")));
+        item.set_day(mcursor.getString(mcursor.getColumnIndex("DAY")));
+        item.set_time(mcursor.getString(mcursor.getColumnIndex("TIME")));
+        item.setMemo(mcursor.getString(mcursor.getColumnIndex("MEMO")));
+        item.setCheck(mcursor.getInt(mcursor.getColumnIndex("_CHECK")));
+        item.setPay(mcursor.getInt(mcursor.getColumnIndex("_PAY")));
+
+        return item;
     }
 }

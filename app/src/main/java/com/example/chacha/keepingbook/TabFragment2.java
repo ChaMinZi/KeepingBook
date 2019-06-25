@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,7 @@ public class TabFragment2 extends Fragment {
             public void onClick(View view) {
                 Item_Order order = new Item_Order();
                 Item_Memo memo = new Item_Memo();
+                int calPay = 0;
 
                 if (editPhone.getText().toString().equals("")) {
                     Toast.makeText(context, "전화번호를 입력하세요", Toast.LENGTH_SHORT).show();
@@ -114,19 +116,35 @@ public class TabFragment2 extends Fragment {
                             Toast.makeText(context, "주문 날짜를 입력하세요", Toast.LENGTH_SHORT).show();
                             break;
                         }
+                        if (checkPay == -1) {
+                            Toast.makeText(context, "완불 / 미불을 선택해주세요", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         memo.set_day(editDate.getText().toString());
                         memo.set_time(editTime.getText().toString());
                         memo.setCheck(checkPay);
-                        memo.setPay(Integer.parseInt(editOutPay.getText().toString()));
                         memo.setPhone(phone);
                         memo.setMemo(String.format(editMemo.getText().toString(), "UTF-8"));
-                        int id;
+                        int id, getPrice;
                         order.setPhone(phone);
                         while (pQ.isEmpty() == false) {
                             id = pQ.poll();
-                            order.setContext(String.format(productName[id], "UTF-8"));
+                            order.setProduct(String.format(productName[id], "UTF-8"));
                             order.setCount(productCount[id]);
+                            getPrice = dbHelper.getPrice(productName[id]);
+                            calPay += (getPrice*productCount[id]);
                             dbHelper.addOrder(order);
+                        }
+                        Log.e("pppppppppppppppppp", ""+calPay);
+                        if (checkPay == 0 && editOutPay.getText().toString().equals("")) {
+                            memo.setPay(calPay);
+                        }
+                        else if (checkPay == 0) {
+                            int outPay = Integer.parseInt(editOutPay.getText().toString());
+                            memo.setPay(calPay - outPay);
+                        }
+                        else {
+                            memo.setPay(0);
                         }
                         dbHelper.addMemo(memo);
                         break;
@@ -160,6 +178,6 @@ public class TabFragment2 extends Fragment {
     public void onPause() {
         super.onPause();
         Arrays.fill(productCount,0);
-        checkPay = 0;
+        checkPay = -1;
     }
 }
